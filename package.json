@@ -1,0 +1,19 @@
+{
+  "name": "selvery-domrf-pilot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.alamics.ru:1003/selvery/selvery-domrf-pilot.git"
+  },
+  "author": "Lev Belousov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.0"
+  }
+}
