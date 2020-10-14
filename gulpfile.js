@@ -3,6 +3,8 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const pug = require('gulp-pug');
+const autoprefixer = require('gulp-autoprefixer');
+const babel = require('gulp-babel');
 const browserSync = require('browser-sync').create();
 
 sass.compiler = require('node-sass');
@@ -27,6 +29,15 @@ gulp.task('browser-sync', function(done) {
     done();
 })
 
+gulp.task('scripts', function () {
+    return gulp.src('src/scripts/app.js')
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(gulp.dest('dest/js'))
+        .pipe(browserSync.reload({stream: true}))
+});
+
 function pugjs (cb) {
     return gulp.src('src/views/*.pug').
     pipe(pug())
@@ -35,8 +46,11 @@ function pugjs (cb) {
 }
 
 function css (cb) {
-    return gulp.src('src/styles/*.scss')
-    .pipe(sass())
+    return gulp.src('src/styles/main.scss')
+    .pipe(sass({
+        outputStyle: 'compressed'
+    }).on('error', sass.logError))
+    .pipe(autoprefixer())
     .pipe(gulp.dest('dest/styles'))
     .pipe(browserSync.reload({stream: true}))
 }
@@ -46,13 +60,8 @@ function server () {
     .pipe(browserSync.reload({stream: true}))
 }
 
-// exports.default = () => {
-//     gulp.series('browser', pugjs, css, server);
-//     gulp.watch('src/styles/*.scss', css);
-//     gulp.watch('src/views/*.pug', pugjs);
-// }
-
-gulp.task('watch', gulp.series(css, pugjs, 'browser-sync', function(done) {
-    gulp.watch('src/styles/*.scss', css);
+gulp.task('watch', gulp.series('scripts', css, pugjs, 'browser-sync', function(done) {
+    gulp.watch(['src/styles/*.scss', 'src/styles/*/*.scss'], css);
     gulp.watch('src/views/*.pug', pugjs);
+    gulp.watch('src/scripts/*.js', gulp.series('scripts'))
 }))
