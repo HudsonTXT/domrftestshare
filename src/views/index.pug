@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Поздравляем вас! — ДОМ.РФ
+        link(rel="stylesheet", href="./styles/main.css")
+    body
+        main
+            .header
+                .header__logo
+                    img(src="images/logo.svg", alt="").header__logo-img
+                .header__bg
+                    img(src="images/ufa.jpg", alt="", srcset="images/ufa@2x.png 2x, images/ufa@3x.png 3x" loading="lazy").header__bg-img
+            .content
+                .content__hello
+                    p.text-bold.fz-16.color-green Уважаемый Сергей Сергеевич, поздравляем вас!
+                .content__message.fz-14.lh-14
+                    p.mb-24 Благодаря государственной поддержке, 20 сентября 
+                        span.text-bold ваш ипотечный кредит на квартиру уменьшился на 
+                            span.color-green 400 тысяч рублей!
+
+                    p.mb-24 Значит в следующем году вы дополнительно сэкономите на процентах до 
+                        span.text-bold.color-green 250 тысяч рублей. 
+
+                    p.mb-24 Подскажите друзьям, как получить господдержку и погасить ипотеку.
+
+                    p.mb-24 
+                        span.text-bold Нажмите на кнопку «Рассказать», 
+                        | и на вашей странице будет опубликован пост-подсказка с инструкцией.
+
+                    p.mb-24.text-bold.color-green Вам будут благодарны другие большие семьи и не только в Уфе! 
+                .share 
+                    .share__grid
+                        - const socials = ['fb', 'vk', 'ok', 'instagram']
+                        each item in socials
+                            button.share__item.button.js-share-button(data-share-type=item) Рассказать
+                                img(src=`images/social-${item}.svg`, alt="").button__icon
+        script(src="js/app.js")

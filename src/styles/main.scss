@@ -1,0 +1,17 @@
+@import "fonts";
+@import "colors";
+
+@import "reset";
+@import "typography";
+
+@import "elements/button.scss";
+
+@import "blocks/header.scss";
+@import "blocks/content.scss";
+@import "blocks/share.scss";
+
+main {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+}

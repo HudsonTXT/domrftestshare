@@ -1,0 +1,12 @@
+.share {
+    &__grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -.5rem;
+    }
+
+    &__item {
+        margin: .5rem;
+        width: calc(50% - 1rem);
+    }
+}

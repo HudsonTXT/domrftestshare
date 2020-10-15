@@ -1,0 +1,38 @@
+
+body {
+    font-family: 'Gilroy', serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.fz-14 {
+    font-size: .875rem;
+}
+
+.fz-16 {
+    font-size: 1rem;
+}
+
+.lh-15 {
+    line-height: 1.5;
+}
+
+.lh-14 {
+    line-height: 1.42857143;
+}
+
+.color-green {
+    color: $color-green;
+}
+
+.mb-24 {
+    margin-bottom: 1.5rem;
+}
