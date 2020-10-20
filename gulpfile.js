@@ -1,7 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
-const { series, parallel } = gulp;
+const { series, parallel, watch } = gulp;
 
 
 const sass = require('gulp-sass');
@@ -23,7 +23,7 @@ gulp.task('browser-sync', function(done) {
             baseDir: 'dest'
         },
         port: 80,
-        https: true
+        https: false
     })
 
     browserSync.watch('dest/').on('change', browserSync.reload);
@@ -41,7 +41,7 @@ gulp.task('scripts', function () {
 const scripts = async () => {
     return gulp.src('src/scripts/app.js')
         .pipe(await webpackStream({
-            watch: true,
+            watch: false,
             mode: 'production',
             entry: {app: './src/scripts/app.js'},
             output: {
@@ -81,21 +81,22 @@ function server () {
     .pipe(browserSync.reload({stream: true}))
 }
 
-// gulp.task('watch', gulp.series('scripts', css, pugjs, 'browser-sync', function(done) {
-//     gulp.watch(['src/styles/*.scss', 'src/styles/*/*.scss'], css);
-//     gulp.watch('src/views/*.pug', pugjs);
-//     gulp.watch('src/scripts/*.js', gulp.series('scripts'))
-// }))
+gulp.task('watch', gulp.series(scripts, styles, html, 'browser-sync', function(done) {
+    gulp.watch(['src/styles/*.scss', 'src/styles/*/*.scss'], styles);
+    gulp.watch('src/views/*.pug', html);
+    gulp.watch('src/scripts/*.js', scripts)
+}))
 
 exports.dev = series(
     parallel(html, styles, scripts)
 );
 
-exports.watch = series(
-    parallel(scripts, styles, html, 'browser-sync', server),
-    () => {
-        gulp.watch(['src/styles/*.scss', 'src/styles/*/*.scss'], styles);
-        gulp.watch('src/views/*.pug', html);
-        gulp.watch('src/scripts/*.js', scripts)
-    }
-)
+// exports.watch = series(
+//     gulp.series(scripts, styles, html, 'browser-sync', server,
+//     (done) => {
+//         watch(['src/styles/*.scss', 'src/styles/*/*.scss'], styles);
+//         watch('src/views/*.pug', html);
+//         watch('src/scripts/*.js', scripts)
+//     }
+// )
+// );

@@ -1,0 +1,47 @@
+.fb-bar {
+    width: 100%;
+    background: #3b5998;
+    color: $color-white;
+    display: none;
+    margin-top: 3rem;
+    align-items: center;
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+
+    &_active {
+        display: flex;
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        &-img, &-name {
+            display: block;
+        }
+
+        &-img {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: .5rem
+        }
+
+        &-name {
+            font-size: .875rem;
+        }
+    }
+
+    &__actions {
+        margin-left: auto;
+
+        &-btn {
+            padding-top: .2rem;
+            padding-bottom: .2rem;
+            background: transparent;
+            box-shadow: none;
+            border: 2px solid $color-white;
+            font-size: .875rem;
+        }
+    }
+
+
+}
