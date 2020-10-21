@@ -313,7 +313,7 @@ function Share(purl, ptitle, pimg, text, token) {
                   console.log(self.text);
                   VK.Api.call('wall.post', {
                         message: self.text,  
-                        attachment: 'photo-199632824_457239017',
+                        attachment: 'photo-199632824_457239018',
                         v: '5.124'
                      }, (response) => {
                       console.log(response);
