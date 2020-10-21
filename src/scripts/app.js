@@ -1,32 +1,9 @@
 const SHARE_DATA = {
     title: 'Это поле title',
-    text: `Чем больше семья, тем больше радости. Если у вас больше двух детей, и ипотечный кредит в любом банке, тогда у меня для вас есть хорошие новости.
-
-    Недавно`,
-    longText: `Чем больше семья, тем больше радости. Если у вас больше двух детей, и ипотечный кредит в любом банке, тогда у меня для вас есть хорошие новости.
-
-Недавно мы получили выплату по госпрограмме на погашение нашего ипотечного кредита. И вы тоже сможете получить до 450 тысяч рублей, если ваш третий или четвёртый (а может быть пятый или больше) ребёнок родился после 1 января 2019. Если ещё не родился, у вас есть время - программа действует до 31 декабря 2022 года. Возраст старших детей значения не имеет - им может быть больше 18 лет.
-
-Условия: 
-Все дети и родитель, подающий заявление, должны быть гражданами РФ.
-Заявитель должен являться заёмщиком по ипотеке.
-Можно получать компенсацию на договоры, заключенные до 1 июля 2023 года.
-3й или последующий ребенок родились после 1 января 2019 года.
-
-Если всё совпадает, то подавайте заявку в банк, где оформлена ипотека и получайте от государства до 450 тысяч рублей на погашение ипотеки.
-
-Что потребуется.
-заявление по форме банка;
-удостоверение личности, нотариально заверенные свидетельства о рождении детей;
-кредитный договор;
-договор купли-продажи жилого помещения или земельного участка, или договор участия в долевом строительстве.
-
-Заявления принимают банки, которые выдали вам ипотеку. Они же проверяют документы, а затем направляют их в ДОМ.РФ. Если возникнут вопросы, всегда можно обратиться на горячую линию ДОМ.РФ: 8 800 775-11-22 - они помогут.
-
-Желаю удачи!
-
-#domrf, #domrf450, #домрф, #450тысяч, #гасимипотеку, #гасимипотеку450 
-    `,
+    text: `Хорошие новости для тех, у кого больше 2 детей и ипотечный кредит.
+Недавно мы получили помощь от государства на погашение ипотеки. И вы можете получить до 450 тысяч, если ваш третий ребёнок родился после 1.1.19.
+Заявления и документы принимают банки, выдающие ипотеку. Уточнить информацию можно в ДОМ.РФ: 8 800 775-11-22 - они помогут.
+#домрф450, #гасимипотеку450`,
     //imgUrl: window.location + 'images/share-cover.jpg'
     img: 'https://xn--h1alcedd.xn--d1aqf.xn--p1ai/wp-content/uploads/2019/03/GettyImages-870761572.jpg',
     url: 'https://спроси.дом.рф',
@@ -44,11 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
             hash = hash.join('')
             console.log(hash);
         }
-        const urlParams = new URLSearchParams(hash)
-        const VKToken = urlParams.get('access_token');
-        if (VKToken) {
-            const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img, SHARE_DATA.longText, VKToken);
-            share['vkPOST']();
+        const urlParams = new URLSearchParams(hash);
+        if (urlParams.get('state') === 'shareToOk') {
+            const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img, SHARE_DATA.text);
+            share['okAuthed']();
+        } else {
+            const VKToken = urlParams.get('access_token');
+            if (VKToken) {
+                const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img, SHARE_DATA.text, VKToken);
+                share['vkPOST']();
+            }
         }
     }
 })
@@ -67,10 +49,9 @@ function init () {
 
     function buttonClicked (e) {
         const { shareType } = e.target.dataset;
-        const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img, SHARE_DATA.longText);
+        const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img, SHARE_DATA.text);
         share[shareType]();
     }
-    facebook.init();
 }
 
 const facebook = {
@@ -84,7 +65,7 @@ const facebook = {
               xfbml            : true,
               version          : 'v8.0'
             });
-            facebook.getLoginStatus();
+            facebook.post(SHARE_DATA.text);
             // FB.AppEvents.logPageView();   
           };
         if (!facebook.fbInited) {
@@ -97,72 +78,98 @@ const facebook = {
               }(document, 'script', 'facebook-jssdk'));
         }
     },
-    login: () => {
-        FB.login(function(response) {
-            console.log(response)
-            if (response.status === 'connected') {
-                facebook.checkMe();
-            } else {
-              // The person is not logged into your webpage or we are unable to tell. 
-            }
-          }, {scope: 'user_posts'});
-    },
-    getLoginStatus: () => {
-        FB.getLoginStatus(function(response) {
-            console.log(response);
-            if (response.status === 'connected') {
-              // The user is logged in and has authenticated your
-              // app, and response.authResponse supplies
-              // the user's ID, a valid access token, a signed
-              // request, and the time the access token 
-              // and signed request each expire.
-              var uid = response.authResponse.userID;
-              var accessToken = response.authResponse.accessToken;
-            } else if (response.status === 'not_authorized') {
-              // The user hasn't authorized your application.  They
-              // must click the Login button, or you must call FB.login
-              // in response to a user gesture, to launch a login dialog.
-            } else {
-              // The user isn't logged in to Facebook. You can launch a
-              // login dialog with a user gesture, but the user may have
-              // to log in to Facebook before authorizing your application.
-            }
-           }, true);
-    },
-    checkMe: () => {
-        FB.api('/me/', (r) => {
-            if(r && !r.error) {
-                facebook.fbUserId = r.id
-                facebook.showLoginnedBar(r);
-            }
-        })
-    },
-    showLoginnedBar: (r) => {
-        const fbBar = document.querySelector('.fb-bar');
-
-        fbBar.querySelector('.fb-bar__user-img').src = `https://graph.facebook.com/${r.id}/picture?type=square`;
-        fbBar.querySelector('.fb-bar__user-name').innerText = r.name
-
-        fbBar.classList.add('fb-bar_active');
-        facebook.post(SHARE_DATA.longText)
-    },
     post: (text) => {
-        // FB.api('/me/feed', 'post', { message: text }, function(response) {
-        //     if (!response || response.error) {
-        //       alert('Error occured');
-        //       console.error(response.error.message)
-        //     } else {
-        //       alert('Post ID: ' + response.id);
-        //     }
-        //   });
         FB.ui({
-            method: 'share',
-            href: 'https://спроси.дом.рф',
+            method: 'feed',
+            // href: 'https://cloud.mail.ru/public/28hL/4UXiZZkES/',
+            // link: 'https://cloud.mail.ru/public/28hL/4UXiZZkES/',
+            // media: ['https://thumb.cloud.mail.ru/weblink/thumb/xw1/28hL/4UXiZZkES/%D0%95%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3_iStock-177363748.jpg?x-email=undefined'],
+            picture: 'https://xn--h1alcedd.xn--d1aqf.xn--p1ai/wp-content/uploads/promo/1200x1200_02.png',
             display: 'popup',
-            quote: text
+            quote: text,
+            hashtag: '#домрф450'
         })
     }
 }
+
+const OK = {
+    init: () => {
+        import(/* webpackChunkName: "oksdk" */ './oksdk').then((module) => {
+            window.OKSDK = module.default;
+            const OKSDKConfig = {
+                app_id: '512000487922',
+                app_key: 'CDPCHMJGDIHBABABA',
+                oauth: {
+                    state: 'shareToOk',
+                    scope: 'VALUABLE_ACCESS,PHOTO_CONTENT'
+                }
+            }
+            OKSDK.init(OKSDKConfig, () => {
+                OK.uploadImage();
+            }, (e) => {
+                console.error(e);
+                console.log('ok is NOOT inited')
+            })
+        }) 
+    },
+    publishText: (uploadedPhotoTokens) => {
+        OKSDK.Widgets.post(null, {
+            attachment: {
+                    media: [
+                        {
+                            type: 'text',
+                            text: SHARE_DATA.text
+                        },
+                        {
+                            type: 'photo',
+                            list: uploadedPhotoTokens
+                        }
+                    ]
+            }
+        });
+    },
+    uploadImage: () => {
+        OKSDK.REST.call("photosV2.getUploadUrl", null, function (status, data, error) {
+            if (status === 'ok' && data['upload_url']) {
+                const uploadUrl = data['upload_url'];
+                const formData = new FormData;
+                fetch('images/1200x1200_01.png')
+                    .then(response => response.blob())
+                    .then(blob => {
+                        formData.append('pic1', blob);
+                    }).then(() => {
+                        fetch(uploadUrl, {
+                            method: 'post',
+                            body: formData
+                        }).then(response => {
+                            if (response.ok) {
+                                return response.json()
+                            }
+                        }).then(json => {
+                            const uploadedPhotoTokens = [];
+                            const uploadedPhotos = json['photos'];
+                            for (let id in uploadedPhotos) {
+                                console.log(id);
+                                if (uploadedPhotos.hasOwnProperty(id)) {
+                                    const token = uploadedPhotos[id]['token'];
+                                    OKSDK.REST.call('photosV2.commit', {
+                                        photo_id: id,
+                                        token: token,
+                                        comment: SHARE_DATA.text
+                                    }, () => {
+                                        uploadedPhotoTokens.push({'id': token});
+                                        OK.publishText(uploadedPhotoTokens)
+                                    })
+                                }
+                            }
+                        })
+                    });
+            }
+        })
+    }
+}
+
+window.OK = OK;
 
 function Share(purl, ptitle, pimg, text, token) {
     this.purl = purl;
@@ -179,77 +186,43 @@ function Share(purl, ptitle, pimg, text, token) {
         description Описание публикации. Если не указано, то будет браться со страницы публикации.
         image   Ссылка на иллюстрацию к публикации. Если не указана, то будет браться со страницы публикации.
     */
-    this.vkOLD = function () {
-        var url  = 'http://vk.com/share.php?';
-        if (this.purl) {
-            url += 'url=' + this.purl;
-        }
-        if (this.ptitle) {
-            url += '&title=' + encodeURIComponent(this.ptitle);
-        }
-        if (this.text) {
-            url += '&description=' + encodeURIComponent(this.text);
-        }
-        if (this.pimg) {
-            url += '&image=' + encodeURIComponent(this.pimg);
-        }
-        url += '&noparse=true';
-        this.popup(url);
-    };
 
-    this.vkGETTOKEN = function () {
-        var url  = 'https://oauth.vk.com/authorize?client_id=7634875&scope=wall&display=page&v=5.124&response_type=token&redirect_uri=' + window.location;
-        window.location = url;
-    };
-
-    this.vkPOST = async function () {
-        const self = this;
-        const body = {
-            message: self.text,
-            access_token: self.token,
-            v: '5.124'
-        };
-        // const r = await fetch(`https://api.vk.com/method/wall.post?message=test&access_token=${self.token}&v=5.124`, {
-        //     mode: 'no-cors',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Access-Control-Allow-Headers': 'Content-Type',
-        //         'Access-Control-Allow-Methods': 'POST'
-        //  },
-        //     method: 'POST',
-        //     body: JSON.stringify(body)
-        // }).then(r => {
-        //     console.log(r)
-        // }).catch(e => {
-        //     console.error(e)
-        // })
-    }
 
     this.ok = function () {
-        let MD5, Base64, UTF8;
-        const initMD5 = import('crypto-js/md5');
-        const initBase64 = import('crypto-js/enc-base64');
-        const initUTF8 = import('crypto-js/enc-utf8');
-        Promise.all([initMD5, initBase64, initUTF8]).then((values) => {
-            console.log(values);
-            MD5 = values[0].default;
-            Base64 = values[1].default;
-            UTF8 = values[2].default;
-            modulesInited();
-        })
+        OK.init();
+        // let MD5, Base64, UTF8;
+        // const initMD5 = import('crypto-js/md5');
+        // const initBase64 = import('crypto-js/enc-base64');
+        // const initUTF8 = import('crypto-js/enc-utf8');
+        // Promise.all([initMD5, initBase64, initUTF8, initOKSDK]).then((values) => {
+        //     console.log(values);
+        //     MD5 = values[0].default;
+        //     Base64 = values[1].default;
+        //     UTF8 = values[2].default;
+        //     modulesInited();
+        // })
 
         const modulesInited = () => {
+            return false;
             const self = this;
             const clientId = '512000487922';
             const secret = '67F16EC1D0CCB6257DDA3118';
             const return_url = window.location;
+            
             let url = 'https://connect.ok.ru/dk?st.cmd=WidgetMediatopicPost';
             const attachment = {
                 media: [
                   {
                     type: "text",
                     text: self.text
+                  },
+                  {
+                      type: 'photo',
+                      list: [
+                          {
+                              photoId: '907543629202'
+                          }
+                      ]
                   }
                 ]
             }
@@ -272,27 +245,15 @@ function Share(purl, ptitle, pimg, text, token) {
         
     };
 
-    this.fb = function () {
-        const self = this;
-        facebook.login();
+
+    this.okAuthed = () => {
+        OK.init();
     }
 
-    this.fbOLD = function () {
-        var url  = 'https://www.facebook.com/dialog/feed?';
-        url += 'app_id=1255939541450273';
-        url+= '&display=popup';
-
-        if (this.purl) {
-            url += '&link=' + encodeURIComponent(this.purl);
-        }
-        if (this.text) {
-            url += '&quote=' + encodeURIComponent(this.text);
-        }
-        if (this.pimg) {
-            // url += '&media='+ encodeURIComponent('[') + this.pimg + encodeURIComponent(']');
-        }
-        this.popup(url);
-    };
+    this.fb = function () {
+        const self = this;
+        facebook.init();
+    }
 
     this.vk = function () {
         const self = this;
@@ -351,7 +312,8 @@ function Share(purl, ptitle, pimg, text, token) {
               if (vkAuthed && !vkPosted) {
                   console.log(self.text);
                   VK.Api.call('wall.post', {
-                        message: self.text.substring(0, 350) + '...',  
+                        message: self.text,  
+                        attachment: 'photo-199632824_457239017',
                         v: '5.124'
                      }, (response) => {
                       console.log(response);
@@ -370,3 +332,4 @@ function Share(purl, ptitle, pimg, text, token) {
         window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
     };
 }
+
