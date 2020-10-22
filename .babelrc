@@ -1,11 +1,18 @@
 {
-    "plugins": ["syntax-dynamic-import"],
-    "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "modules": false
-            }
-        ]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "> 4%",
+            "safari 10",
+            "ie 11",
+            "iOS 9"
+          ]
+        },
+        "useBuiltIns": "entry"
+      }
     ]
+  ]
 }
