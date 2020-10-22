@@ -65,15 +65,14 @@ function init () {
     const { shareType } = e.target.dataset;
     const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img,
         SHARE_DATA.text);
-    share[shareType]();
     buttonClickedCallback(e);
+    share[shareType]();
   }
 }
 
 function buttonClickedCallback (e) {
   fetch('events.php', {
     method: 'post',
-    mode: 'no-cors',
     body: JSON.stringify({
       event: e.target.dataset.shareType,
       uid: window.USERID
