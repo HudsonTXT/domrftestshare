@@ -62,10 +62,10 @@ function init () {
       });
 
   function buttonClicked (e) {
-    const { shareType } = e.target.dataset;
+    const shareType = e.target.getAttribute('data-share-type');
     const share = new Share(SHARE_DATA.url, SHARE_DATA.title, SHARE_DATA.img,
         SHARE_DATA.text);
-    buttonClickedCallback(e);
+    buttonClickedCallback(shareType);
     share[shareType]();
   }
 }
@@ -74,7 +74,7 @@ function buttonClickedCallback (e) {
   fetch('events.php', {
     method: 'post',
     body: JSON.stringify({
-      event: e.target.dataset.shareType,
+      event: e,
       uid: window.USERID
     })
   })
