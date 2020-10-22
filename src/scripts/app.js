@@ -71,14 +71,14 @@ function init () {
 }
 
 function buttonClickedCallback (e) {
-  /*fetch('https://google.com', {
+  fetch('events.php', {
     method: 'post',
     mode: 'no-cors',
-    body: JSON.stringify({
-      action: 'button.clicked',
-      social: e.target.dataset.shareType
-    })
-  })*/
+    body: {
+      event: e.target.dataset.shareType,
+      uid: window.USERID
+    }
+  })
   console.log('button clicked callback');
 }
 
