@@ -74,10 +74,10 @@ function buttonClickedCallback (e) {
   fetch('events.php', {
     method: 'post',
     mode: 'no-cors',
-    body: {
+    body: JSON.stringify({
       event: e.target.dataset.shareType,
       uid: window.USERID
-    }
+    })
   })
   console.log('button clicked callback');
 }
