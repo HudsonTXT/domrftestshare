@@ -1,9 +1,9 @@
 .share {
     &__grid {
         display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        margin: -.5rem;
+        flex-wrap: row;
+        justify-content: center;
+        margin: 0 1rem .5rem 1rem;
     }
 
     &__item {

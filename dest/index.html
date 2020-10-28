@@ -10,7 +10,7 @@
     <main>
       <div class="header">
         <div class="header__logo"><img class="header__logo-img" src="images/logo.svg" alt=""/></div>
-        <div class="header__bg"><img class="header__bg-img" src="images/ufa.jpg" alt="" srcset="images/ufa@2x.png 2x, images/ufa@3x.png 3x" loading="lazy"/></div>
+        <div class="header__bg"><img class="header__bg-img" src="images/ufa.png" alt="" srcset="images/ufa@2x.png 2x, images/ufa@3x.png 3x" loading="lazy"/></div>
       </div>
       <div class="content">
         <div class="content__hello">
@@ -19,16 +19,23 @@
         <div class="content__message fz-14 lh-14">
           <p class="mb-24">Благодаря государственной поддержке, 20 сентября <span class="text-bold">ваш ипотечный кредит на квартиру уменьшился на <span class="color-green">400 тысяч рублей!</span></span></p>
           <p class="mb-24">Значит в следующем году вы дополнительно сэкономите на процентах до <span class="text-bold color-green">250 тысяч рублей. </span></p>
-          <p class="mb-24">Подскажите друзьям, как получить господдержку и погасить ипотеку.</p>
-          <p class="mb-24"> <span class="text-bold">Нажмите на кнопку «Рассказать», </span>и на вашей странице будет опубликован пост-подсказка с инструкцией.</p>
+          <p class="mb-24">Расскажите друзьям, как получить господдержку и погасить ипотеку — опубликуйте пост-подсказку у себя на странице. </p>
           <p class="mb-24 text-bold color-green">Вам будут благодарны другие большие семьи и не только в Уфе! </p>
-        </div>
-        <div class="share"> 
-          <div class="share__grid">
-            <button class="share__item button js-share-button" data-share-type="fb">Рассказать<img class="button__icon" src="images/social-fb.svg" alt=""/></button>
-            <button class="share__item button js-share-button" data-share-type="vk">Рассказать<img class="button__icon" src="images/social-vk.svg" alt=""/></button>
-            <button class="share__item button js-share-button" data-share-type="ok">Рассказать<img class="button__icon" src="images/social-ok.svg" alt=""/></button>
+          <p class="mb-24" id="item-to-copy"><span class="text-bold">Три простых шага</span></p>
+          <p class="mb-16"><span class="color-green">1.</span><span> Нажмите кнопку</span></p>
+          <p class="mb-24">
+            <button class="button-copy js-copy-button" onclick="copyToClipboard()">Скопировать</button>
+          </p>
+          <p class="mb-12"><span class="color-green">2.</span><span> Запустите приложение социальной сети</span></p>
+          <div class="share"> 
+            <div class="share__grid">
+              <button class="share__item button js-share-button" data-share-type="fb"><img class="button__icon" src="images/social-fb.svg" alt=""/></button>
+              <button class="share__item button js-share-button" data-share-type="vk"><img class="button__icon" src="images/social-vk.svg" alt=""/></button>
+              <button class="share__item button js-share-button" data-share-type="ok"><img class="button__icon" src="images/social-ok.svg" alt=""/></button>
+              <button class="share__item button js-share-button" data-share-type="instagram"><img class="button__icon" src="images/social-instagram.svg" alt=""/></button>
+            </div>
           </div>
+          <p class="mb-12"><span class="color-green">3.</span><span> Нажмите «Вставить текст», выберите картинку из галереи и расскажите, как можно получить до 450 тысяч рублей.</span></p>
         </div>
         <div class="fb-bar">
           <div class="fb-bar__user"><img class="fb-bar__user-img" src="https://graph.facebook.com/378657230166923/picture?type=square"/>

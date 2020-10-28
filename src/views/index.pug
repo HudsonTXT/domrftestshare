@@ -11,7 +11,7 @@ html(lang="ru")
                 .header__logo
                     img(src="images/logo.svg", alt="").header__logo-img
                 .header__bg
-                    img(src="images/ufa.jpg", alt="", srcset="images/ufa@2x.png 2x, images/ufa@3x.png 3x" loading="lazy").header__bg-img
+                    img(src="images/ufa.png", alt="", srcset="images/ufa@2x.png 2x, images/ufa@3x.png 3x" loading="lazy").header__bg-img
             .content
                 .content__hello
                     p.text-bold.fz-16.color-green Уважаемый Сергей Сергеевич, поздравляем вас!
@@ -23,19 +23,35 @@ html(lang="ru")
                     p.mb-24 Значит в следующем году вы дополнительно сэкономите на процентах до 
                         span.text-bold.color-green 250 тысяч рублей. 
 
-                    p.mb-24 Подскажите друзьям, как получить господдержку и погасить ипотеку.
-
-                    p.mb-24 
-                        span.text-bold Нажмите на кнопку «Рассказать», 
-                        | и на вашей странице будет опубликован пост-подсказка с инструкцией.
+                    p.mb-24 Расскажите друзьям, как получить господдержку и погасить ипотеку — опубликуйте пост-подсказку у себя на странице. 
 
                     p.mb-24.text-bold.color-green Вам будут благодарны другие большие семьи и не только в Уфе! 
-                .share 
-                    .share__grid
-                        - const socials = ['fb', 'vk', 'ok']
-                        each item in socials
-                            button.share__item.button.js-share-button(data-share-type=item) Рассказать
-                                img(src=`images/social-${item}.svg`, alt="").button__icon
+
+                    p.mb-24#item-to-copy
+                        span.text-bold Три простых шага
+
+                    p.mb-16
+                        span.color-green 1.
+                        span  Нажмите кнопку
+
+                    p.mb-24
+                        button(onclick="copyToClipboard()").button-copy.js-copy-button Скопировать
+                    
+                    p.mb-12
+                        span.color-green 2.
+                        span  Запустите приложение социальной сети
+
+                    .share 
+                        .share__grid
+                            - const socials = ['fb', 'vk', 'ok', 'instagram']
+                            each item in socials
+                                button.share__item.button.js-share-button(data-share-type=item)
+                                    img(src=`images/social-${item}.svg`, alt="").button__icon
+                    
+                    p.mb-12
+                        span.color-green 3.
+                        span  Нажмите «Вставить текст», выберите картинку из галереи и расскажите, как можно получить до 450 тысяч рублей.
+
                 .fb-bar
                     .fb-bar__user
                         img.fb-bar__user-img(src="https://graph.facebook.com/378657230166923/picture?type=square")

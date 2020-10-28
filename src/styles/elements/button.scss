@@ -1,20 +1,48 @@
 .button {
+    width: 48px;
     display: flex;
     cursor: pointer;
     align-items: center;
     justify-content: center;
     outline: none;
     background: $color-green;  
-    border-radius: .25rem;
     border: none;
     color: $color-white;
     font-family: inherit;
     @extend .fz-16;
     @extend .lh-15;
     padding: .75rem;
-    box-shadow: 0px 4px 16px 0px rgba($color-green, 0.6);
+
+    &:hover {
+        background: #246900;
+    }
 
     &__icon {
-        margin-left: .625rem;
+        margin: 0 auto;
+        &:hover {
+            background: #246900;
+        }
+    }
+}
+
+.button-copy {
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    background: $color-green;  
+    border: none;
+    color: $color-white;
+    font-family: inherit;
+    @extend .fz-12;
+    @extend .lh-15;
+    padding: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+
+    &:hover {
+        background: #246900;
     }
 }
