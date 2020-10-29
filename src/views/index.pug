@@ -41,14 +41,14 @@ html(lang="ru")
                         span.color-green 2.
                         span  Запустите приложение социальной сети
 
-                    .share 
-                        .share__grid
-                            - const socials = ['fb', 'vk', 'ok', 'instagram']
-                            each item in socials
-                                button.share__item.button.js-share-button(data-share-type=item)
-                                    img(src=`images/social-${item}.svg`, alt="").button__icon
-                    
-                    p.mb-12
+                .share 
+                    .share__grid
+                        - const socials = ['fb', 'vk', 'ok', 'instagram'];
+                        each soc in socials 
+                            button.share__item.button(data-share=soc)
+                                img(src=`images/social-${soc}.svg`, alt="").button__icon
+
+                    p.mb-12.fz-14.lh-14
                         span.color-green 3.
                         span  Нажмите «Вставить текст», выберите картинку из галереи и расскажите, как можно получить до 450 тысяч рублей.
 
