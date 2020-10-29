@@ -78,8 +78,8 @@ const buttons = document.querySelectorAll("button");
 buttons.forEach((item) => {
   item.addEventListener("click", (e) => {
     console.log(e);
-    const { share } = e.target.dataset;
-    if (share == "instagram") {
+    const share = e.target.getAttribute('data-share');
+    if (share === "instagram") {
       if(device.ios()) {
         window.open("instagram://app");
       } else window.open("intent://instagram.com/_n/mainfeed/#Intent;package=com.instagram.android;scheme=https;end");
