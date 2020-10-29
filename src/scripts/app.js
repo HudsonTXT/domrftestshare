@@ -7,7 +7,6 @@ const SHARE_DATA = {
   //imgUrl: window.location + 'images/share-cover.jpg'
   img: 'https://xn--h1alcedd.xn--d1aqf.xn--p1ai/wp-content/uploads/2019/03/GettyImages-870761572.jpg',
   url: 'https://спроси.дом.рф'
-
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -48,45 +47,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// let button = document.getElementById('button');
+let button = document.getElementById('button');
 
-// button.onclick = function() {
-//   let text = document.getElementById('one').textContent + document.getElementById('two').textContent;
-//   copyTextToClipboard(text);
-// }
+button.onclick = function() {
+  let text = SHARE_DATA.text;
+  copyTextToClipboard(text);
+}
 
-// function fallbackCopyTextToClipboard(text) {
-//   var textArea = document.createElement("textarea");
-//   textArea.value = text;
-//   document.body.appendChild(textArea);
-//   textArea.focus();
-//   textArea.select();
+function fallbackCopyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
 
-//   try {
-//       var successful = document.execCommand("copy");
-//       var msg = successful ? "successful" : "unsuccessful";
-//       //console.log("Fallback: Copying text command was " + msg);
-//   } catch (err) {
-//       console.error("Fallback: Oops, unable to copy", err);
-//   }
+  try {
+      var successful = document.execCommand("copy");
+      var msg = successful ? "successful" : "unsuccessful";
+      //console.log("Fallback: Copying text command was " + msg);
+  } catch (err) {
+      console.error("Fallback: Oops, unable to copy", err);
+  }
 
-//   document.body.removeChild(textArea);
-// }
+  document.body.removeChild(textArea);
+}
 
-// function copyTextToClipboard(text) {
-//   if (!navigator.clipboard) {
-//       fallbackCopyTextToClipboard(text);
-//       return;
-//   }
-//   navigator.clipboard.writeText(text).then(
-//       function() {
-//           //console.log("Async: Copying to clipboard was successful!");
-//       },
-//       function(err) {
-//           console.error("Async: Could not copy text: ", err);
-//       }
-//   );
-// }
+function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+      fallbackCopyTextToClipboard(text);
+      return;
+  }
+  navigator.clipboard.writeText(text).then(
+      function() {
+          //console.log("Async: Copying to clipboard was successful!");
+      },
+      function(err) {
+          console.error("Async: Could not copy text: ", err);
+      }
+  );
+}
 
 function init () {
   const buttons = document.querySelectorAll('.js-share-button');
