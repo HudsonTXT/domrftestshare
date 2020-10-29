@@ -1,9 +1,9 @@
 const SHARE_DATA = {
   title: 'Это поле title',
   text: `Хорошие новости для тех, у кого больше 2 детей и ипотечный кредит.
-Недавно мы получили помощь от государства на погашение ипотеки. И вы можете получить до 450 тысяч, если ваш третий ребёнок родился после 1.1.19.
-Заявления и документы принимают банки, выдающие ипотеку. Уточнить информацию можно в ДОМ.РФ: 8 800 775-11-22 - они помогут.
-#домрф450, #гасимипотеку450`,
+  Недавно мы получили помощь от государства на погашение ипотеки. И вы можете получить до 450 тысяч, если ваш третий ребёнок родился после 01.01.19.
+  Заявления и документы принимают банки, выдающие ипотеку. Уточнить информацию можно в ДОМ.РФ: 8 800 775-11-22 - они помогут.
+  #домрф450, #гасимипотеку450`,
   //imgUrl: window.location + 'images/share-cover.jpg'
   img: 'https://xn--h1alcedd.xn--d1aqf.xn--p1ai/wp-content/uploads/2019/03/GettyImages-870761572.jpg',
   url: 'https://спроси.дом.рф'
@@ -107,6 +107,7 @@ function init () {
     buttonClickedCallback(shareType);
     share[shareType]();
   }
+  
 }
 
 function buttonClickedCallback (e) {
@@ -205,57 +206,53 @@ const OK = {
   },
   uploadImage: () => {
     OKSDK.REST.call('photosV2.getUploadUrl', null,
-        function (status, data, error) {
-          if (status === 'ok' && data['upload_url']) {
-            const uploadUrl = data['upload_url'];
-            const formData = new FormData;
-            fetch('images/1200x1200_01.png').
-                then(response => response.blob()).
-                then(blob => {
-                  formData.append('pic1', blob);
-                }).
-                then(() => {
-                  fetch(uploadUrl, {
-                    method: 'post',
-                    body: formData
-                  }).then(response => {
-                    if (response.ok) {
-                      return response.json();
-                    }
-                  }).then(json => {
-                    const uploadedPhotoTokens = [];
-                    const uploadedPhotos = json['photos'];
-                    for (let id in uploadedPhotos) {
-                      if (uploadedPhotos.hasOwnProperty(id)) {
-                        const token = uploadedPhotos[id]['token'];
-                        OKSDK.REST.call('photosV2.commit', {
-                          photo_id: id,
-                          token: token,
-                          comment: SHARE_DATA.text
-                        }, () => {
-                          uploadedPhotoTokens.push({ 'id': token });
-                          OK.publishText(uploadedPhotoTokens);
-                        });
-                      }
-                    }
+      function (status, data, error) {
+        if (status === 'ok' && data['upload_url']) {
+          const uploadUrl = data['upload_url'];
+          const formData = new FormData;
+          fetch('images/1200x1200_01.png').
+          then(response => response.blob()).
+          then(blob => {
+            formData.append('pic1', blob);
+          }).
+          then(() => {
+            fetch(uploadUrl, {
+              method: 'post',
+              body: formData
+            }).then(response => {
+              if (response.ok) {
+                return response.json();
+              }
+            }).then(json => {
+              const uploadedPhotoTokens = [];
+              const uploadedPhotos = json['photos'];
+              for (let id in uploadedPhotos) {
+                if (uploadedPhotos.hasOwnProperty(id)) {
+                  const token = uploadedPhotos[id]['token'];
+                  OKSDK.REST.call('photosV2.commit', {
+                    photo_id: id,
+                    token: token,
+                    comment: SHARE_DATA.text
+                  }, () => {
+                    uploadedPhotoTokens.push({ 'id': token });
+                    OK.publishText(uploadedPhotoTokens);
                   });
-                });
-          }
-        });
+                }
+              }
+            });
+          });
+        }
+      });
   }
 };
 
 window.OK = OK;
 
-function Share (purl, ptitle, pimg, text, token) {
+function Share(purl, ptitle, pimg, text) {
   this.purl = purl;
   this.ptitle = ptitle;
   this.pimg = pimg;
   this.text = text;
-  if (token) {
-    this.token = token;
-  }
-
   /*
       url Ссылка на страницу, которая будет публиковаться.
       title   Заголовок публикации. Если не указан, то будет браться со страницы публикации.
@@ -263,94 +260,67 @@ function Share (purl, ptitle, pimg, text, token) {
       image   Ссылка на иллюстрацию к публикации. Если не указана, то будет браться со страницы публикации.
   */
 
-  this.ok = function () {
-    OK.init();
+  this.vk = function () {
+    var url = 'http://vk.com/share.php?';
 
+    if (this.purl) {
+      url += 'url=' + encodeURIComponent(this.purl);
+    }
+
+    if (this.ptitle) {
+      url += '&title=' + encodeURIComponent(this.ptitle);
+    }
+
+    if (this.text) {
+      url += '&description=' + encodeURIComponent(this.text);
+    }
+
+    if (this.pimg) {
+      url += '&image=' + encodeURIComponent(this.pimg);
+    }
+
+    url += '&noparse=true';
+    this.popup(url);
   };
 
-  this.okAuthed = () => {
-    OK.init();
+  this.ok = function () {
+    var url = 'https://connect.ok.ru/offer?';
+
+    if (this.purl) {
+      url += 'url=' + encodeURIComponent(this.purl);
+    }
+
+    if (this.ptitle) {
+      url += '&title=' + encodeURIComponent(this.ptitle);
+    }
+
+    if (this.pimg) {
+      url += '&imageUrl=' + encodeURIComponent(this.pimg);
+    }
+
+    this.popup(url);
   };
 
   this.fb = function () {
-    const self = this;
-    facebook.init();
-  };
+    var url = 'https://www.facebook.com/dialog/feed?';
+    url += 'app_id=1255939541450273';
+    url += '&display=popup';
 
-  this.vk = function () {
-    const self = this;
-    let vkAuthed = false;
-    let vkPosted = false;
-    let vkApiInited = false;
-    let VKToken;
-
-    window.vkAsyncInit = function () {
-      VK.init({
-        apiId: 7629067
-      });
-      vkInited();
-      // VK.Observer.subscribe('auth.login', vkPost)
-    };
-
-    if (!vkApiInited) {
-      setTimeout(function () {
-        var el = document.createElement('script');
-        el.type = 'text/javascript';
-        el.src = 'https://vk.com/js/api/openapi.js?168';
-        el.async = true;
-        document.getElementById('vk_api_transport').appendChild(el);
-      }, 0);
+    if (this.purl) {
+      url += '&link=' + encodeURIComponent(this.purl);
     }
 
-    const vkInited = function () {
-      if (window.VK) {
-        vkApiInited = true;
-      }
-      if (vkApiInited && !vkAuthed) {
-        vkAuth();
-      }
-      if (vkApiInited && vkAuthed) {
-        vkPost();
-      }
-    };
+    if (this.text) {
+      url += '&quote=' + encodeURIComponent(this.text);
+    }
 
-    const vkAuth = function () {
-      if (!vkAuthed) {
-        VK.Auth.login((callback) => {
-          console.log(callback);
-          if (callback.status === 'connected') {
-            vkAuthed = true;
-            VKToken = callback.session.sid;
-            vkPost();
-          } else {
-            vkAuthed = false;
-          }
-        }, 8192);
-      }
-    };
+    if (this.pimg) {// url += '&media='+ encodeURIComponent('[') + this.pimg + encodeURIComponent(']');
+    }
 
-    const vkPost = function () {
-      if (vkAuthed && !vkPosted) {
-        console.log(self.text);
-        VK.Api.call('wall.post', {
-          message: self.text,
-          attachment: 'photo-199632824_457239018',
-          v: '5.124'
-        }, (response) => {
-          console.log(response);
-          if (response.error) {
-            vkPosted = false;
-          } else {
-            vkPosted = true;
-          }
-        });
-      }
-    };
-
+    this.popup(url);
   };
 
   this.popup = function (url) {
     window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
   };
 }
-
