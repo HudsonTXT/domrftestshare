@@ -87,13 +87,13 @@ buttons.forEach((item) => {
 
     switch (share) {
       case "vk":
-        window.open("vk://feed");
+        window.open("vk://");
         break;
       case "ok":
-        window.open("ok://app");
+        window.open("ok://");
         break;
       case "fb":
-        window.open("facebook://app");
+        window.open("facebook://");
         break;
     }
   });
