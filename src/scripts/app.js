@@ -93,7 +93,7 @@ buttons.forEach((item) => {
         window.open("ok://");
         break;
       case "fb":
-        window.open("facebook://");
+        window.open("fb://");
         break;
     }
   });
